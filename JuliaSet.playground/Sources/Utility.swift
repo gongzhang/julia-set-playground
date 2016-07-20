@@ -18,13 +18,30 @@ public struct JuliaSetColor {
     }
     
     func toRGBRange() -> RGBRange {
+        //
+        // This method converts hue and brightness to dynamic ranges
+        // of RGB channels. The ranges will be used to coloring the
+        // fractal image.
+        //
+        // The goal is to get better color and visual quality.
+        //
+        //  1.0          /----
+        //              /
+        //             /
+        //            /
+        //           /
+        //  0.0 ----/
+        //      0  in---out  1
+        //
+        //  (Between in and out, there is the dynamic range of the channel.)
+        //
         var s = RGBRange()
         var hsb = HSBComponents()
         hsb.h = self.hue
         hsb.s = self.brightness / 10 + 0.65
         hsb.b = 1 - self.brightness
         s.colorOut = hsb.toRGB().double3
-        hsb.b = (1 - cos(hsb.b * M_PI)) / 8
+        hsb.b = (1 - cos(hsb.b * M_PI)) / 8  // not evil at all
         s.colorIn = hsb.toRGB().double3
         return s
     }

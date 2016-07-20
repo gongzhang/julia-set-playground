@@ -87,9 +87,9 @@ public final class JuliaSetRenderer {
         let wxh = w * h
         let ptr = UnsafeMutablePointer<UInt32>.alloc(wxh * 4)
         
-        let cx = Double(juliaSet.const.x)
-        let cy = Double(juliaSet.const.y)
-        let loop = 200
+        let cx = juliaSet.const.x
+        let cy = juliaSet.const.y
+        let loop = 200 // 200 suits for most situation. Bigger value gives you better quality.
         
         let color = juliaSet.color.toRGBRange()
         let cin = [color.colorIn.0, color.colorIn.1, color.colorIn.2]
@@ -106,14 +106,17 @@ public final class JuliaSetRenderer {
                 
                 var c = 0.0
                 
+                // the classical "escape-time" algorithm
                 for i in 1..<loop {
+                    // z(n+1) = z(n)^2 + c
                     (zx, zy) = (zx * zx - zy * zy + cx, 2.0 * zx * zy + cy)
                     if (zx * zx + zy * zy) > 4.0 {
-                        c = Double(i) / Double(loop); // 0 - 1
+                        c = Double(i) / Double(loop); // escape-time: 0 to 1
                         break
                     }
                 }
                 
+                // a special coloring algorithm (good tone & contrast)
                 var rgb = [0.0, 0.0, 0.0]
                 for j in 0..<3 {
                     if cin[j] != cout[j] {
