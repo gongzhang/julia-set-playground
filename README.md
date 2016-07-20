@@ -42,3 +42,9 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { image in
     // then get result in main thread
 }
 ```
+
+## Contact
+
+Feel free to contact me if you need more information ;)
+
+Email: *gong@me.com*
