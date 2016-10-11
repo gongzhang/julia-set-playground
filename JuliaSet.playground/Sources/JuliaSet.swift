@@ -36,48 +36,48 @@ public struct JuliaSet {
 
 public final class JuliaSetRenderer {
     
-    private static let async_render_queue: dispatch_queue_t = {
-        return dispatch_queue_create("julia_set_async_render", DISPATCH_QUEUE_CONCURRENT)
+    fileprivate static let async_render_queue: DispatchQueue = {
+        return DispatchQueue(label: "julia_set_async_render", attributes: DispatchQueue.Attributes.concurrent)
     }()
     
-    private static let sync_render_queue: dispatch_queue_t = {
-        return dispatch_queue_create("julia_set_sync_render", DISPATCH_QUEUE_CONCURRENT)
+    fileprivate static let sync_render_queue: DispatchQueue = {
+        return DispatchQueue(label: "julia_set_sync_render", attributes: DispatchQueue.Attributes.concurrent)
     }()
     
-    private init() {}
+    fileprivate init() {}
     
     /// Generate Julia set image in background, and get the result in main thread.
-    public static func asyncRender(juliaSet: JuliaSet, sizeInPixel size: CGSize, completion: UIImage -> ()) {
+    public static func asyncRender(_ juliaSet: JuliaSet, sizeInPixel size: CGSize, completion: @escaping (UIImage) -> ()) {
         asyncRender(in: async_render_queue,
-                    queueQos: QOS_CLASS_BACKGROUND,
+                    queueQos: DispatchQoS.QoSClass.background,
                     width: Int(size.width),
                     height: Int(size.height),
                     juliaSet: juliaSet
         ) { cgImage in
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(UIImage(CGImage: cgImage))
+            DispatchQueue.main.async {
+                completion(UIImage(cgImage: cgImage))
             }
         }
     }
     
     /// Generate Julia set image.
-    public static func syncRender(juliaSet: JuliaSet, sizeInPixel size: CGSize) -> UIImage {
+    public static func syncRender(_ juliaSet: JuliaSet, sizeInPixel size: CGSize) -> UIImage {
         var result: UIImage! = nil
-        let sema = dispatch_semaphore_create(0)
+        let sema = DispatchSemaphore(value: 0)
         asyncRender(in: sync_render_queue,
-                    queueQos: QOS_CLASS_USER_INTERACTIVE,
+                    queueQos: DispatchQoS.QoSClass.userInteractive,
                     width: Int(size.width),
                     height: Int(size.height),
                     juliaSet: juliaSet
         ) { cgImage in
-            result = UIImage(CGImage: cgImage)
-            dispatch_semaphore_signal(sema)
+            result = UIImage(cgImage: cgImage)
+            sema.signal()
         }
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
         return result
     }
     
-    private static func asyncRender(`in` renderQueue: dispatch_queue_t, queueQos: qos_class_t, width w: Int, height h: Int, juliaSet: JuliaSet, completion: CGImage -> ()) {
+    fileprivate static func asyncRender(in renderQueue: DispatchQueue, queueQos: DispatchQoS.QoSClass, width w: Int, height h: Int, juliaSet: JuliaSet, completion: @escaping (CGImage) -> ()) {
         assert(w > 0 && h > 0)
         
         // generate ruler
@@ -85,7 +85,7 @@ public final class JuliaSetRenderer {
         let y_values = generateYValues(width: w, height: h, juliaSet: juliaSet)
         
         let wxh = w * h
-        let ptr = UnsafeMutablePointer<UInt32>.alloc(wxh * 4)
+        let ptr = UnsafeMutablePointer<UInt32>.allocate(capacity: wxh * 4)
         
         let cx = juliaSet.const.x
         let cy = juliaSet.const.y
@@ -96,11 +96,11 @@ public final class JuliaSetRenderer {
         let cout = [color.colorOut.0, color.colorOut.1, color.colorOut.2]
         
         
-        dispatch_async(dispatch_get_global_queue(queueQos, 0)) {
+        DispatchQueue.global(qos: queueQos).async {
             
             // 1. compute pixel by pixel
             
-            dispatch_apply(wxh, renderQueue) { index in
+            DispatchQueue.concurrentPerform(iterations: wxh) { index in
                 var zx = x_values[index % w]
                 var zy = y_values[index / w]
                 
@@ -131,24 +131,24 @@ public final class JuliaSetRenderer {
             
             // 2. generate image object
             
-            let provider = CGDataProviderCreateWithData(nil, ptr, 4 * wxh) { _, data, size in
-                let raw = unsafeBitCast(data, UnsafeMutablePointer<UInt32>.self)
-                raw.dealloc(size)
+            let provider = CGDataProvider(dataInfo: nil, data: ptr, size: 4 * wxh) { _, data, size in
+                let raw = unsafeBitCast(data, to: UnsafeMutablePointer<UInt32>.self)
+                raw.deallocate(capacity: size)
             }
             
-            let image = CGImageCreate(
-                w, h, 8, 32, 4 * w,
-                CGColorSpaceCreateDeviceRGB(),
-                CGBitmapInfo.ByteOrderDefault,
-                provider, nil, false,
-                .RenderingIntentDefault
+            let image = CGImage(
+                width: w, height: h, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 4 * w,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGBitmapInfo(),
+                provider: provider!, decode: nil, shouldInterpolate: false,
+                intent: .defaultIntent
             )
             
             completion(image!)
         }
     }
     
-    static private func generateXValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
+    static fileprivate func generateXValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
         var arr = [Double]()
         arr.reserveCapacity(w)
         
@@ -163,7 +163,7 @@ public final class JuliaSetRenderer {
         return arr
     }
     
-    static private func generateYValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
+    static fileprivate func generateYValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
         var arr = [Double]()
         arr.reserveCapacity(h)
         
@@ -176,7 +176,7 @@ public final class JuliaSetRenderer {
         }
         
         assert(arr.count == h)
-        return arr.reverse() // reverse y-axis
+        return arr.reversed() // reverse y-axis
     }
     
 }
