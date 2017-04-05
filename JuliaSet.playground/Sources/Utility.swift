@@ -11,10 +11,12 @@ public struct JuliaSetColor {
     
     public var hue = 0.0
     public var brightness = 0.0
+    public var saturation = 1.0
     
-    public init(hue: Double, brightness: Double) {
+    public init(hue: Double, brightness: Double, saturation: Double) {
         self.hue = hue
         self.brightness = brightness
+        self.saturation = saturation
     }
     
     func toRGBRange() -> RGBRange {
@@ -35,14 +37,20 @@ public struct JuliaSetColor {
         //
         //  (Between in and out, there is the dynamic range of the channel.)
         //
+        
         var s = RGBRange()
         var hsb = HSBComponents()
+        
+        // out
         hsb.h = self.hue
-        hsb.s = self.brightness / 10 + 0.65
+        hsb.s = self.brightness / 10 + 0.65 * self.saturation
         hsb.b = 1 - self.brightness
         s.colorOut = hsb.toRGB().double3
+        
+        // in
         hsb.b = (1 - cos(hsb.b * .pi)) / 8  // not evil at all
         s.colorIn = hsb.toRGB().double3
+        
         return s
     }
     

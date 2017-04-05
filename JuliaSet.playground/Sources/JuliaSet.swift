@@ -8,6 +8,9 @@ public struct Complex {
         self.x = x
         self.y = y
     }
+    public init(_ x: Float, _ y: Float) {
+        self.init(Double(x), Double(y))
+    }
 }
 
 /// The configuration of a Julia set image.
@@ -29,25 +32,26 @@ public struct JuliaSet {
     public var const = Complex(-0.5, 0.0)
     
     /// The color which is used to render the image.
-    public var color = JuliaSetColor(hue: 0, brightness: 0.8)
+    public var color = JuliaSetColor(hue: 0, brightness: 0.8, saturation: 1.0)
     
     public init() {}
+    
 }
 
 public final class JuliaSetRenderer {
     
-    fileprivate static let async_render_queue: DispatchQueue = {
+    private static let async_render_queue: DispatchQueue = {
         return DispatchQueue(label: "julia_set_async_render", attributes: DispatchQueue.Attributes.concurrent)
     }()
     
-    fileprivate static let sync_render_queue: DispatchQueue = {
+    private static let sync_render_queue: DispatchQueue = {
         return DispatchQueue(label: "julia_set_sync_render", attributes: DispatchQueue.Attributes.concurrent)
     }()
     
-    fileprivate init() {}
+    private init() {}
     
     /// Generate Julia set image in background, and get the result in main thread.
-    public static func asyncRender(_ juliaSet: JuliaSet, sizeInPixel size: CGSize, completion: @escaping (UIImage) -> ()) {
+    public static func asyncRender(_ juliaSet: JuliaSet, pixelSize size: CGSize, completion: @escaping (UIImage) -> ()) {
         asyncRender(in: async_render_queue,
                     queueQos: DispatchQoS.QoSClass.background,
                     width: Int(size.width),
@@ -61,7 +65,7 @@ public final class JuliaSetRenderer {
     }
     
     /// Generate Julia set image.
-    public static func syncRender(_ juliaSet: JuliaSet, sizeInPixel size: CGSize) -> UIImage {
+    public static func syncRender(_ juliaSet: JuliaSet, pixelSize size: CGSize) -> UIImage {
         var result: UIImage! = nil
         let sema = DispatchSemaphore(value: 0)
         asyncRender(in: sync_render_queue,
@@ -77,7 +81,7 @@ public final class JuliaSetRenderer {
         return result
     }
     
-    fileprivate static func asyncRender(in renderQueue: DispatchQueue, queueQos: DispatchQoS.QoSClass, width w: Int, height h: Int, juliaSet: JuliaSet, completion: @escaping (CGImage) -> ()) {
+    private static func asyncRender(in renderQueue: DispatchQueue, queueQos: DispatchQoS.QoSClass, width w: Int, height h: Int, juliaSet: JuliaSet, completion: @escaping (CGImage) -> ()) {
         assert(w > 0 && h > 0)
         
         // generate ruler
@@ -147,7 +151,7 @@ public final class JuliaSetRenderer {
         }
     }
     
-    static fileprivate func generateXValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
+    static private func generateXValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
         var arr = [Double]()
         arr.reserveCapacity(w)
         
@@ -162,7 +166,7 @@ public final class JuliaSetRenderer {
         return arr
     }
     
-    static fileprivate func generateYValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
+    static private func generateYValues(width w: Int, height h: Int, juliaSet: JuliaSet) -> [Double] {
         var arr = [Double]()
         arr.reserveCapacity(h)
         
