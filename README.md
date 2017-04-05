@@ -8,11 +8,11 @@ The formula of *Julia set* is simple and elegant:
 z(n+1) = z(n)^2 + c
 ```
 
-...But it can generate varies beautiful fractal images with infinity details:
+...But it can generates varies beautiful fractal images with infinity details:
 
 <img src="./Images/playground.png" width="600">
 
-> Xcode 8.3 Screenshot
+> Xcode 8.3 Playground Screenshot
 
 For more information about *Julia set*, See [https://en.wikipedia.org/wiki/Julia_set](https://en.wikipedia.org/wiki/Julia_set).
 
@@ -22,7 +22,9 @@ This project is used in my iOS app *Mysteries of Fractal (分形的奥秘)*. You
 
 ## Installation
 
-Just download `JuliaSet.playground` and open it by latest version of *Xcode*. All the code is in the `JuliaSet.playground/Sources` folder.
+Just download `JuliaSet.playground` and open it by latest version of *Xcode*. All the code is in `JuliaSet.playground/Sources` folder.
+
+If you have an iPad, you can also run this project using Apple's *Swift Playgrounds* app.
 
 ## Sample Code
 
@@ -59,11 +61,11 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 }
 ```
 
-## More Mathematics Projects
+## More Mathematics Playground Projects
 
-https://github.com/gongzhang/fft2d-swift-playground
-https://github.com/gongzhang/swift-fourier-expansion
-https://github.com/gongzhang/swift-complex-number
+- 2D Image FFT: https://github.com/gongzhang/fft2d-swift-playground
+- Fourier Expansion: https://github.com/gongzhang/swift-fourier-expansion
+- Complex Number: https://github.com/gongzhang/swift-complex-number
 
 ## Contact
 
