@@ -132,8 +132,7 @@ public final class JuliaSetRenderer {
             // 2. generate image object
             
             let provider = CGDataProvider(dataInfo: nil, data: ptr, size: 4 * wxh) { _, data, size in
-                let raw = unsafeBitCast(data, to: UnsafeMutablePointer<UInt32>.self)
-                raw.deallocate(capacity: size)
+                data.deallocate(bytes: size, alignedTo: 0)
             }
             
             let image = CGImage(

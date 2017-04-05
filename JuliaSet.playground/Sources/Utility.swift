@@ -41,7 +41,7 @@ public struct JuliaSetColor {
         hsb.s = self.brightness / 10 + 0.65
         hsb.b = 1 - self.brightness
         s.colorOut = hsb.toRGB().double3
-        hsb.b = (1 - cos(hsb.b * M_PI)) / 8  // not evil at all
+        hsb.b = (1 - cos(hsb.b * .pi)) / 8  // not evil at all
         s.colorIn = hsb.toRGB().double3
         return s
     }
