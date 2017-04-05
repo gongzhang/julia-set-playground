@@ -85,7 +85,7 @@ public final class JuliaSetRenderer {
         let y_values = generateYValues(width: w, height: h, juliaSet: juliaSet)
         
         let wxh = w * h
-        let ptr = UnsafeMutablePointer<UInt32>.allocate(capacity: wxh * 4)
+        let ptr = UnsafeMutablePointer<UInt32>.allocate(capacity: wxh)
         
         let cx = juliaSet.const.x
         let cy = juliaSet.const.y
