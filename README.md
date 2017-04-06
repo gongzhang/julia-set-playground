@@ -38,7 +38,7 @@ z(n+1) = z(n)^2 + c
 
 ## API 使用样例
 
-你可以 **手动指定参数** 并观察它们如何影响分形图的生成：
+你可以**手动指定参数**并观察它们如何影响分形图的生成：
 
 ```swift
 let imageSize = CGSize(width: 600, height: 440)
@@ -62,7 +62,7 @@ var code = "juliaset://?code=25477FFF7FFF7FEB5A4400FE"  // 从“分形的奥秘
 let outputImage = JuliaSetRenderer.syncRender(JuliaSet.decodeURL(code)!, pixelSize: imageSize)
 ```
 
-渲染程序也支持 *异步* 渲染方法，它不会阻塞主线程。如果你准备在实际 iOS 项目中渲染分形图，这个方法就会很有用。
+渲染程序也支持**异步**渲染方法，它不会阻塞主线程。如果你准备在实际 iOS 项目中渲染分形图，这个方法就会很有用。
 
 ```swift
 // 在后台渲染...
@@ -73,14 +73,14 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 
 ## 更多有趣的数学项目
 
-- 二维图像 FFT: https://github.com/gongzhang/fft2d-swift-playground
-- 傅里叶级数展开: https://github.com/gongzhang/swift-fourier-expansion
-- 复数(虚数)运算: https://github.com/gongzhang/swift-complex-number
+- 二维图像 FFT: [fft2d-swift-playground](https://github.com/gongzhang/fft2d-swift-playground)
+- 傅里叶级数展开: [swift-fourier-expansion](https://github.com/gongzhang/swift-fourier-expansion)
+- 复数(虚数)运算: [swift-complex-number](https://github.com/gongzhang/swift-complex-number)
 
 ## 联系方式
 
-- LinkedIn: [linkedin.com/in/zhanggong](https://www.linkedin.com/in/zhanggong/)
-- Email: [gong@me.com](mailto:gong@me.com)
+- 领英: [linkedin.com/in/zhanggong](https://www.linkedin.com/in/zhanggong/)
+- 邮件: [gong@me.com](mailto:gong@me.com)
 
 ***
 
