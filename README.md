@@ -1,4 +1,4 @@
-[>>> Jump to English Version <<<](#julia-set-playground)
+[>>> Jump to English Version <<<](https://github.com/gongzhang/julia-set-playground/blob/master/README.md#julia-set-playground)
 
 # 朱利亚集合 Playground
 
