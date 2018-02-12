@@ -21,7 +21,7 @@ fileprivate struct ByteFloat: ExpressibleByFloatLiteral {
     
     var hexString: String {
         var s = String(rawData, radix: 16, uppercase: true)
-        let cnt = s.characters.count
+        let cnt = s.count
         for _ in 0 ..< (2 - cnt) {
             s = "0" + s
         }
@@ -56,7 +56,7 @@ fileprivate struct JuliaFloat: ExpressibleByFloatLiteral {
     
     var hexString: String {
         var s = String(rawData, radix: 16, uppercase: true)
-        let cnt = s.characters.count
+        let cnt = s.count
         for _ in 0 ..< (4 - cnt) {
             s = "0" + s
         }
@@ -82,11 +82,11 @@ extension Complex {
     }
     
     fileprivate static func make(hexString: String) -> Complex? {
-        guard hexString.characters.count == 8 else {
+        guard hexString.count == 8 else {
             return nil
         }
-        let hex1 = hexString.characters.prefix(4)
-        let hex2 = hexString.characters.suffix(4)
+        let hex1 = hexString.prefix(4)
+        let hex2 = hexString.suffix(4)
         if let hx = JuliaFloat(hexString: String(hex1)),
             let hy = JuliaFloat(hexString: String(hex2)) {
             return Complex(hx.floatValue, hy.floatValue)
@@ -107,12 +107,12 @@ extension JuliaSetColor {
     }
     
     fileprivate static func make(hexString: String) -> JuliaSetColor? {
-        guard hexString.characters.count == 6 else {
+        guard hexString.count == 6 else {
             return nil
         }
-        let hex1 = hexString.characters.prefix(2)
-        let hex2 = hexString.characters.prefix(4)
-        let hex3 = hexString.characters.suffix(2)
+        let hex1 = hexString.prefix(2)
+        let hex2 = hexString.prefix(4)
+        let hex3 = hexString.suffix(2)
         if let h = ByteFloat(hexString: String(hex1)),
             let b = ByteFloat(hexString: String(hex2.suffix(2))),
             let s = ByteFloat(hexString: String(hex3)) {
@@ -158,13 +158,13 @@ extension JuliaSet {
     }
     
     static func decode(hexString: String) -> JuliaSet? {
-        guard hexString.characters.count == 24 else {
+        guard hexString.count == 24 else {
             return nil
         }
-        let hex1 = hexString.characters.prefix(8)
-        let hex2 = (hexString.characters.prefix(16) as String.CharacterView.SubSequence).suffix(8)
-        let hex3 = (hexString.characters.suffix(8) as String.CharacterView.SubSequence).prefix(2)
-        let hex4 = hexString.characters.suffix(6)
+        let hex1 = hexString.prefix(8)
+        let hex2 = (hexString.prefix(16) as String.SubSequence).suffix(8)
+        let hex3 = (hexString.suffix(8) as String.SubSequence).prefix(2)
+        let hex4 = hexString.suffix(6)
         
         guard let const = Complex.make(hexString: String(hex1)) else {
             return nil
@@ -209,7 +209,7 @@ extension URL {
             if pair.count != 2 {
                 continue
             }
-            if pair[0].characters.isEmpty {
+            if pair[0].isEmpty {
                 continue
             }
             result[pair[0]] = pair[1]
