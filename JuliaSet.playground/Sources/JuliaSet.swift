@@ -136,7 +136,7 @@ public final class JuliaSetRenderer {
             // 2. generate image object
             
             let provider = CGDataProvider(dataInfo: nil, data: ptr, size: 4 * wxh) { _, data, size in
-                data.deallocate(bytes: size, alignedTo: 0)
+                data.deallocate()
             }
             
             let image = CGImage(
