@@ -81,35 +81,30 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 
 # Julia Set Playground
 
-This repo contains a **Swift Playground** that generates *Julia set* fractal images. *Julia set* is a classical concept in fractal mathematics, and it can be used to generate amazing fractal images.
+This is an Xcode Playground that generates fractal images of the [Julia set](https://en.wikipedia.org/wiki/Julia_set).
 
-The formula of *Julia set* is simple and elegant:
+The Julia set is a classic concept in fractal theory that generates stunning fractal images by means of an extremely simple formula.
 
-```
+```sh
 z(n+1) = z(n)^2 + c
+# where 'z' is a complex number 
 ```
 
-...But it can generates varies beautiful fractal images with infinity details:
+<img src="./Images/playground.png" width="500">
 
-<img src="./Images/playground.png" width="600">
+You can use Xcode 13 to open `JuliaSet.playground`, and view the rendered image results on the right side of the window. The Playground contains all the source code inside.
 
-> Xcode 8.3 Playground Screenshot
+Also, you may know of other kinds of fractals besides the Julia set, such as the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set). With a simple modification of the code, you can draw it. You can try it yourself.
 
-For more information about *Julia set*, See [https://en.wikipedia.org/wiki/Julia_set](https://en.wikipedia.org/wiki/Julia_set).
+## About
 
-This project is used in my iOS app *Mysteries of Fractal (分形的奥秘)*. You can download it in the App Store for free. [App Store Link](https://itunes.apple.com/app/apple-store/id1086527481?pt=117851333&ct=github&mt=8)
+I have a standalone app called "The Mysteries of Fractal". It generates dynamic fractal images in real time (based on Metal shader). The Mysteries of Fractal is a paid app for iOS / iPadOS / macOS. Welcome to experience it: [App Store Link](https://apps.apple.com/app/id1086527481).
 
-<img src="./Images/appstore.png" width="300">
-
-## Installation
-
-Just download `JuliaSet.playground` and open it by latest version of *Xcode*. All the code is in `JuliaSet.playground/Sources` folder.
-
-If you have an iPad, you can also run this project using Apple's *Swift Playgrounds* app.
+<img src="./Images/appstore.png" width="400">
 
 ## Sample Code
 
-You can **manually adjust the parameters** and see how they affect the image:
+You can specify the formula parameters and observe how they affect the fractal image:
 
 ```swift
 let imageSize = CGSize(width: 600, height: 440)
@@ -126,14 +121,14 @@ julia.color = JuliaSetColor(
 let outputImage = JuliaSetRenderer.syncRender(julia, pixelSize: imageSize)
 ```
 
-You can also **export a specific fractal** from the *Mysteries of Fractal* app, then draw it in playground:
+You can also export a particular fractal from the Mysteries of Fractal app and draw it in Playground:
 
 ```swift
-var code = "juliaset://?code=25477FFF7FFF7FEB5A4400FE"  // exported by "Mysteries of Fractal" app
+var code = "juliaset://?code=25477FFF7FFF7FEB5A4400FE"  // exported from app
 let outputImage = JuliaSetRenderer.syncRender(JuliaSet.decodeURL(code)!, pixelSize: imageSize)
 ```
 
-The render also provides an *asynchronous* method to generate fractal image, which does not block the main thread. It's useful when you generate big image in a real iOS app.
+The render API supports asynchronous execution.
 
 ```swift
 // render in background...
