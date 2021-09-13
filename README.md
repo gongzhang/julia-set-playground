@@ -79,8 +79,6 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 
 ***
 
-> 以下为英文版本 README
-
 # Julia Set Playground
 
 This repo contains a **Swift Playground** that generates *Julia set* fractal images. *Julia set* is a classical concept in fractal mathematics, and it can be used to generate amazing fractal images.
