@@ -60,9 +60,10 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 
 ## More Mathematics Playground Projects
 
-- 2D Image FFT: https://github.com/gongzhang/fft2d-swift-playground
-- Fourier Expansion: https://github.com/gongzhang/swift-fourier-expansion
-- Complex Number: https://github.com/gongzhang/swift-complex-number
+- Conway's Game of Life: [gongzhang/conways-game-of-life](https://github.com/gongzhang/conways-game-of-life)
+- 2D Image FFT: [gongzhang/fft2d-swift-playground](https://github.com/gongzhang/fft2d-swift-playground)
+- Fourier Expansion: [gongzhang/swift-fourier-expansion](https://github.com/gongzhang/swift-fourier-expansion)
+- Complex Number: [gongzhang/swift-complex-number](https://github.com/gongzhang/swift-complex-number)
 
 ## Contact
 

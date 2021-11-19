@@ -68,11 +68,11 @@ JuliaSetRenderer.asyncRender(julia, sizeInPixel: imageSize) { outputImage in
 
 ## 我的其他数学项目
 
+- 康威生命游戏: [conways-game-of-life](https://github.com/gongzhang/conways-game-of-life)
 - 二维图像 FFT: [fft2d-swift-playground](https://github.com/gongzhang/fft2d-swift-playground)
 - 傅里叶级数展开: [swift-fourier-expansion](https://github.com/gongzhang/swift-fourier-expansion)
 - 复数(虚数)运算: [swift-complex-number](https://github.com/gongzhang/swift-complex-number)
 
 ## 联系方式
 
-- 领英: [linkedin.com/in/zhanggong](https://www.linkedin.com/in/zhanggong/)
 - 邮件: [gong@me.com](mailto:gong@me.com)
